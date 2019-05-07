@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Events;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -14,6 +15,13 @@ class EventController extends Controller
     	$event = Event::active()->get();
     	$title = 'Events';
     	return view('admin.event',compact('event','title'));
+    }
+
+    public function indexapi()
+    {
+        return EventResource::collection(
+            Event::whereStatus(1)->get()
+        );
     }
 
     public function create()
