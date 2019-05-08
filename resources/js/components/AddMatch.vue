@@ -28,7 +28,7 @@
 						</div>
 						<div class="form-group col-md-6 p-0 m-0">
 							<label>Number of Games</label>
-							<input type="number" class="form-control" @keypress="checkHandicapDependencies()" v-model="number_of_matches">
+							<input type="number" class="form-control" @keyup="checkHandicapDependencies()" v-model="number_of_matches">
 						</div>
 						<div v-if="checkIfReady()">
 							<div class="form-group mt-2">
@@ -131,14 +131,20 @@
 				// alert('hey');
 				if(this.number_of_matches < 2){
 					this.options.handicap = false;
-					this.options.team_a_minus_one_point_five = false;
-					this.option.team_b_minus_one_point_five = false;
+					if (this.options.team_a_minus_one_point_five){
+						this.options.team_a_minus_one_point_five = false;	
+					}
+					if (this.options.team_b_minus_one_point_five){
+						this.options.team_b_minus_one_point_five = false;	
+					}
+					
 				}
 			},
 			checkHandicap(){
-				if(this.handicap == false){
+				
+				if(this.options.handicap == false){
 					this.options.team_a_minus_one_point_five = false;
-					this.option.team_b_minus_one_point_five = false;	
+					this.options.team_b_minus_one_point_five = false;	
 				}
 			}
 		}

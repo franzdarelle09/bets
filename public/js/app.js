@@ -1920,14 +1920,20 @@ __webpack_require__.r(__webpack_exports__);
       // alert('hey');
       if (this.number_of_matches < 2) {
         this.options.handicap = false;
-        this.options.team_a_minus_one_point_five = false;
-        this.option.team_b_minus_one_point_five = false;
+
+        if (this.options.team_a_minus_one_point_five) {
+          this.options.team_a_minus_one_point_five = false;
+        }
+
+        if (this.options.team_b_minus_one_point_five) {
+          this.options.team_b_minus_one_point_five = false;
+        }
       }
     },
     checkHandicap: function checkHandicap() {
-      if (this.handicap == false) {
+      if (this.options.handicap == false) {
         this.options.team_a_minus_one_point_five = false;
-        this.option.team_b_minus_one_point_five = false;
+        this.options.team_b_minus_one_point_five = false;
       }
     }
   }
@@ -55056,7 +55062,7 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: _vm.number_of_matches },
                 on: {
-                  keypress: function($event) {
+                  keyup: function($event) {
                     return _vm.checkHandicapDependencies()
                   },
                   input: function($event) {

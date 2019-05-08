@@ -29,6 +29,10 @@ class MatchController extends Controller
         return view('admin.create_match',compact('categories','matches','teams'));
     }
 
+    public function store(){
+        
+    }
+
     public function indexapi()
     {
     	return MatchResource::collection(
