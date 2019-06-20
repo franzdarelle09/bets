@@ -21,4 +21,6 @@ Route::post('/user/signin','Users\UserController@signin');
 Route::get('/user/signout','Users\UserController@signout');
 Route::post('/predict','Matches\MatchfrontController@predict');
 
+Route::get('/populate-category','Categories\CategoryController@populateCategory');
+
 Route::get('/test','Matches\MatchController@test');

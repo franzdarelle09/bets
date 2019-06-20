@@ -55,5 +55,6 @@ class BetController extends Controller
             endif;
     	endforeach;
         $match->match_status = 'Complete';
+        $match->save();
     }
 }
