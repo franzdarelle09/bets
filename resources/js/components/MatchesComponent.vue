@@ -16,12 +16,11 @@
 						<th>Type</th>
 						<th>Number of Games</th>
 						<th>Status</th>
-						<th>Event</th>
-						<th>Link</th>
 						<th>Winners</th>
 						<th>Category</th>
 						<th>Time Remaining</th>
 						<th>Actions</th>
+						<th>Winner</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -30,15 +29,17 @@
 						<td class="align-middle">{{match.name}}</td>
 						<td class="align-middle">{{match.number_of_matches}}</td>
 						<td class="align-middle">{{match.match_status}}</td>
-						<td class="align-middle">{{match.event.name}}</td>
-						<td class="align-middle"><a href="#">Link</a></td>
 						<td class="align-middle">{{match.winner || 'not yet decided' }}</td>
 						<td class="align-middle">{{match.category.name}}</td>
 						<td class="align-middle">{{getTimeNow(match.scheduled_date)}}</td>
 						<td class="text-center align-middle">
-							<button class="btn btn-primary m-1" style="width: 135px;">Declare a winner</button>
+							
 							<button class="btn btn-success m-1" style="width: 135px;">Change Status</button>
 							<button class="btn btn-danger m-1" style="width: 135px;">Delete Match</button>
+						</td>
+						<td class="text-center align-middle">
+							<button class="btn btn-primary m-1 declare-winner" :match-id="match.id" @click="declareWinner(match.team_a.id,match.id)" style="width: 135px;">{{match.team_a.name}}</button>
+							<button class="btn btn-primary m-1 declare-winner" :match-id="match.id" @click="declareWinner(match.team_b.id,match.id)" style="width: 135px;">{{match.team_b.name}}</button>
 						</td>
 					</tr>
 				</tbody>
@@ -73,7 +74,23 @@
 				let now =  moment(scheduled_date).fromNow();
 				return now;
 				
+			},
+			declareWinner(team_id,match_id){
+				axios.post('/api/declare-winner',{
+					team_id:team_id,
+					match_id:match_id
+				})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.log('whoops '+err);
+				})
+
 			}
 		}
-	}
+	};
+
+	
+	
 </script>

@@ -8,7 +8,7 @@
                 <div class="nk-widget">
                     <h4 class="nk-widget-title"><span class="text-main-1">Contact</span> With Us</h4>
                     <div class="nk-widget-content">
-                        <form action="php/ajax-contact-form.php" class="nk-form nk-form-ajax">
+                        <form action="/" class="nk-form nk-form-ajax">
                             <div class="row vertical-gap sm-gap">
                                 <div class="col-md-6">
                                     <input type="email" class="form-control required" name="email" placeholder="Email *">
@@ -38,8 +38,8 @@
                             
                             <div class="col-lg-6">
                                 <div class="nk-widget-post-2">
-                                    <a href="blog-article.html" class="nk-post-image">
-                                        <img src="assets/images/post-1-sm.jpg" alt="">
+                                    <a href="#" class="nk-post-image">
+                                        <img src="/assets/images/post-1-sm.jpg" alt="">
                                     </a>
                                     <div class="nk-post-title"><a href="blog-article.html">Smell magic in the air. Or maybe barbecue</a></div>
                                     <div class="nk-post-date">
@@ -51,8 +51,8 @@
                             
                             <div class="col-lg-6">
                                 <div class="nk-widget-post-2">
-                                    <a href="blog-article.html" class="nk-post-image">
-                                        <img src="assets/images/post-2-sm.jpg" alt="">
+                                    <a href="#" class="nk-post-image">
+                                        <img src="/assets/images/post-2-sm.jpg" alt="">
                                     </a>
                                     <div class="nk-post-title"><a href="blog-article.html">Grab your sword and fight the Horde</a></div>
                                     <div class="nk-post-date">
@@ -65,12 +65,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="nk-widget">
-                    <h4 class="nk-widget-title"><span class="text-main-1">In</span> Twitter</h4>
-                    <div class="nk-widget-content">
-                        <div class="nk-twitter-list" data-twitter-count="1"></div>
-                    </div>
-                </div>
+               
             </div>
         </div>
         <div class="nk-gap-3"></div>

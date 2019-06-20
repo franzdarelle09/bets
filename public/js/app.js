@@ -1837,9 +1837,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      names: ['Match Winner', 'Game 1 Winner', 'Game 2 Winner', 'Game 3 Winner', 'Game 4 Winner', 'Game 5 Winner'],
       categories: [],
       teams: [],
       events: [],
@@ -1848,6 +1860,8 @@ __webpack_require__.r(__webpack_exports__);
       team_a: 0,
       team_b: 0,
       number_of_matches: 1,
+      date: '',
+      time: '',
       options: {
         f10k: false,
         game_winner: false,
@@ -1863,11 +1877,29 @@ __webpack_require__.r(__webpack_exports__);
     this.loadEvents();
   },
   methods: {
+    addMatch: function addMatch() {
+      var formdata = new FormData();
+      formdata.append('category_id', this.category_id);
+      formdata.append('event_id', this.event_id);
+      formdata.append('team_a', this.team_a);
+      formdata.append('team_b', this.team_b);
+      formdata.append('number_of_matches', this.number_of_matches);
+      formdata.append('date', this.date);
+      formdata.append('time', this.time);
+      formdata.append('number_of_matches', this.number_of_matches);
+      formdata.append('options', JSON.stringify(this.options));
+      axios.post('/admin/matches/save', formdata).then(function (res) {
+        console.log(res.data);
+        alert('success');
+        window.location = '/admin/matches/create';
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
     loadCategories: function loadCategories() {
       var _this = this;
 
       axios.get('/api/categories').then(function (res) {
-        console.log(res.data);
         _this.categories = res.data.data;
       })["catch"](function (err) {
         console.log(err);
@@ -1941,6 +1973,175 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MatchList.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MatchList.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      matches: []
+    };
+  },
+  created: function created() {
+    this.loadMatches();
+  },
+  methods: {
+    loadMatches: function loadMatches() {
+      var _this = this;
+
+      axios.get('/api/matches').then(function (res) {
+        _this.matches = res.data.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    timeRemaining: function timeRemaining(scheduled_date) {
+      // console.log(moment.locale());
+      var date = moment(scheduled_date, "YYYY-MM-DD H:i:s").fromNow();
+      return date; // var now  = "04/09/2013 15:00:00";
+      // var then = "02/09/2013 14:20:30";
+      // var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
+      // var d = moment.duration(ms);
+      // var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+      // return s;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MatchesComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MatchesComponent.vue?vue&type=script&lang=js& ***!
@@ -1950,6 +2151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2023,6 +2225,16 @@ __webpack_require__.r(__webpack_exports__);
       //let now = moment(new Date());
       var now = moment(scheduled_date).fromNow();
       return now;
+    },
+    declareWinner: function declareWinner(team_id, match_id) {
+      axios.post('/api/declare-winner', {
+        team_id: team_id,
+        match_id: match_id
+      }).then(function (res) {
+        console.log(res.data);
+      })["catch"](function (err) {
+        console.log('whoops ' + err);
+      });
     }
   }
 });
@@ -55046,6 +55258,58 @@ var render = function() {
               1
             ),
             _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("div", { staticClass: "row mx-0" }, [
+                _c("div", { staticClass: "col-md-6 mx-0 px-0" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.date,
+                        expression: "date"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "date" },
+                    domProps: { value: _vm.date },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.date = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.time,
+                        expression: "time"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "time" },
+                    domProps: { value: _vm.time },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.time = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "form-group col-md-6 p-0 m-0" }, [
               _c("label", [_vm._v("Number of Games")]),
               _vm._v(" "),
@@ -55128,52 +55392,59 @@ var render = function() {
                         }
                       }),
                       _vm._v("  F10K\n\t\t\t\t\t\t\t\t"),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.options.game_winner,
-                            expression: "options.game_winner"
-                          }
-                        ],
-                        staticStyle: { "margin-left": "20px" },
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.options.game_winner)
-                            ? _vm._i(_vm.options.game_winner, null) > -1
-                            : _vm.options.game_winner
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.options.game_winner,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.options,
-                                    "game_winner",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.options,
-                                    "game_winner",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
+                      _vm.number_of_matches > 1
+                        ? _c("span", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.options.game_winner,
+                                  expression: "options.game_winner"
+                                }
+                              ],
+                              staticStyle: { "margin-left": "20px" },
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(_vm.options.game_winner)
+                                  ? _vm._i(_vm.options.game_winner, null) > -1
+                                  : _vm.options.game_winner
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.options.game_winner,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.options,
+                                          "game_winner",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.options,
+                                          "game_winner",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.options, "game_winner", $$c)
+                                  }
+                                }
                               }
-                            } else {
-                              _vm.$set(_vm.options, "game_winner", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v("  Game Winner\n\t\t\t\t\t\t\t\t"),
+                            }),
+                            _vm._v("  Game Winner")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _vm.number_of_matches > 1
                         ? _c("span", [
                             _c("input", {
@@ -55368,8 +55639,152 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "card-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary float-right",
+                on: {
+                  click: function($event) {
+                    return _vm.addMatch()
+                  }
+                }
+              },
+              [_vm._v("Save")]
+            )
+          ])
         ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "nk-gap" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "nk-tabs" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "tab-content" }, [
+        _c(
+          "div",
+          {
+            staticClass: "tab-pane fade show active",
+            attrs: { role: "tabpanel", id: "tabs-1-1" }
+          },
+          [
+            _c("div", { staticClass: "nk-gap" }),
+            _vm._v(" "),
+            _vm._l(_vm.matches, function(match) {
+              return _c("div", { key: match.id, staticClass: "nk-match" }, [
+                _c("div", { staticClass: "nk-match-team-left" }, [
+                  _c("a", { attrs: { href: "/match/" + match.slug } }, [
+                    _c("span", { staticClass: "nk-match-team-logo" }, [
+                      _c("img", {
+                        attrs: {
+                          src: "/storage/images/teams/" + match.team_a.photo,
+                          alt: ""
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "nk-match-team-name" }, [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(match.team_a.name) +
+                          "\n                                    "
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "nk-match-status" }, [
+                  _c("a", { attrs: { href: "/match/" + match.slug } }, [
+                    _c("span", { staticClass: "nk-match-status-vs" }, [
+                      _vm._v(
+                        "[BO" +
+                          _vm._s(match.number_of_matches) +
+                          "] " +
+                          _vm._s(match.event.name)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "nk-match-status-date" }, [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(_vm.timeRemaining(match.scheduled_date)) +
+                          "                                \n                                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "nk-match-score bg-danger" }, [
+                      _vm._v(
+                        "\n                                        UPCOMING\n                                    "
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "nk-match-team-right" }, [
+                  _c("a", { attrs: { href: "/match/" + match.slug } }, [
+                    _c("span", { staticClass: "nk-match-team-name" }, [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(match.team_b.name) +
+                          "\n                                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "nk-match-team-logo" }, [
+                      _c("img", {
+                        attrs: {
+                          src: "/storage/images/teams/" + match.team_b.photo,
+                          alt: ""
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "nk-gap" })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _vm._m(3),
+        _vm._v(" "),
+        _vm._m(4),
+        _vm._v(" "),
+        _vm._m(5),
+        _vm._v(" "),
+        _vm._m(6)
       ])
     ])
   ])
@@ -55379,11 +55794,143 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c("button", { staticClass: "btn btn-primary float-right" }, [
-        _vm._v("Save")
+    return _c("h3", { staticClass: "nk-decorated-h-2" }, [
+      _c("span", [
+        _c("span", { staticClass: "text-main-1" }, [_vm._v("Latest")]),
+        _vm._v(" Matches")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-tabs nav-tabs-fill" }, [
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link active", attrs: { href: "#" } }, [
+          _vm._v("ALL")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("DOTA 2")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("CSGO")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("LOL")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("SPORTS")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("OTHERS")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { role: "tabpanel", id: "tabs-1-2" }
+      },
+      [
+        _c("div", { staticClass: "nk-gap" }),
+        _vm._v(" "),
+        _vm._v("\n                        mmo2\n                    ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { role: "tabpanel", id: "tabs-1-3" }
+      },
+      [
+        _c("div", { staticClass: "nk-gap" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "nk-gap" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { role: "tabpanel", id: "tabs-1-4" }
+      },
+      [
+        _c("div", { staticClass: "nk-gap" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "nk-gap" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { role: "tabpanel", id: "tabs-1-5" }
+      },
+      [
+        _c("div", { staticClass: "nk-gap" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "nk-gap" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { role: "tabpanel", id: "tabs-1-6" }
+      },
+      [
+        _c("div", { staticClass: "nk-gap" }),
+        _vm._v(" "),
+        _vm._v(
+          "\n                        \n\n                        indie\n\n\n                        "
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "nk-gap" })
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -55443,12 +55990,6 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "align-middle" }, [
-                    _vm._v(_vm._s(match.event.name))
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(2, true),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "align-middle" }, [
                     _vm._v(_vm._s(match.winner || "not yet decided"))
                   ]),
                   _vm._v(" "),
@@ -55460,7 +56001,39 @@ var render = function() {
                     _vm._v(_vm._s(_vm.getTimeNow(match.scheduled_date)))
                   ]),
                   _vm._v(" "),
-                  _vm._m(3, true)
+                  _vm._m(2, true),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center align-middle" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary m-1 declare-winner",
+                        staticStyle: { width: "135px" },
+                        attrs: { "match-id": match.id },
+                        on: {
+                          click: function($event) {
+                            return _vm.declareWinner(match.team_a.id, match.id)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(match.team_a.name))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary m-1 declare-winner",
+                        staticStyle: { width: "135px" },
+                        attrs: { "match-id": match.id },
+                        on: {
+                          click: function($event) {
+                            return _vm.declareWinner(match.team_b.id, match.id)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(match.team_b.name))]
+                    )
+                  ])
                 ])
               }),
               0
@@ -55503,17 +56076,15 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Event")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Link")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Winners")]),
         _vm._v(" "),
         _c("th", [_vm._v("Category")]),
         _vm._v(" "),
         _c("th", [_vm._v("Time Remaining")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", [_vm._v("Actions")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Winner")])
       ])
     ])
   },
@@ -55521,21 +56092,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "align-middle" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Link")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("td", { staticClass: "text-center align-middle" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary m-1", staticStyle: { width: "135px" } },
-        [_vm._v("Declare a winner")]
-      ),
-      _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-success m-1", staticStyle: { width: "135px" } },
@@ -67721,6 +68278,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('matches-component', __webpack_require__(/*! ./components/MatchesComponent.vue */ "./resources/js/components/MatchesComponent.vue")["default"]);
 Vue.component('add-match', __webpack_require__(/*! ./components/AddMatch.vue */ "./resources/js/components/AddMatch.vue")["default"]);
+Vue.component('match-list', __webpack_require__(/*! ./components/MatchList.vue */ "./resources/js/components/MatchList.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -67857,6 +68415,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddMatch_vue_vue_type_template_id_3690510f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddMatch_vue_vue_type_template_id_3690510f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MatchList.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/MatchList.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MatchList.vue?vue&type=template&id=25b884a8& */ "./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8&");
+/* harmony import */ var _MatchList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MatchList.vue?vue&type=script&lang=js& */ "./resources/js/components/MatchList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MatchList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/MatchList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/MatchList.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/MatchList.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MatchList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MatchList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MatchList.vue?vue&type=template&id=25b884a8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MatchList.vue?vue&type=template&id=25b884a8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchList_vue_vue_type_template_id_25b884a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

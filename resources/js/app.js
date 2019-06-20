@@ -26,6 +26,9 @@ Vue.component(
 Vue.component(
 	'add-match', require('./components/AddMatch.vue').default
 );
+Vue.component(
+	'match-list', require('./components/MatchList.vue').default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

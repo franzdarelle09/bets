@@ -16,10 +16,13 @@
                             Use email and password:
 
                             <div class="nk-gap"></div>
-                            <input type="email" value="" name="email" class=" form-control" placeholder="Email">
+                            <input type="email" value="" name="email" id="signin_email" class=" form-control" placeholder="Email">
 
                             <div class="nk-gap"></div>
-                            <input type="password" value="" name="password" class="required form-control" placeholder="Password">
+                            <input type="password" value="" name="password" id="signin_password" class="required form-control" placeholder="Password">
+
+                            <div class="nk-gap"></div>
+                            <input type="checkbox" id="remember" name="remember">&nbsp; <label for="remember">Remember Acccount</label>
                         </div>
                         <div class="col-md-6">
                             Or social account:
@@ -37,7 +40,7 @@
                     <div class="nk-gap-1"></div>
                     <div class="row vertical-gap">
                         <div class="col-md-6">
-                            <a href="#" class="nk-btn nk-btn-rounded nk-btn-color-white nk-btn-block">Sign In</a>
+                            <a href="#" id="signin" class="nk-btn nk-btn-rounded nk-btn-color-white nk-btn-block">Sign In</a>
                         </div>
                         <div class="col-md-6">
                             <div class="mnt-5">
@@ -67,19 +70,21 @@
                 <h4 class="mb-0"><span class="text-main-1">Sign</span> Up</h4>
 
                 <div class="nk-gap-1"></div>
-                <form action="#" class="nk-form text-white">
+                <form action="/user/signup" class="nk-form text-white">
                     <div class="row vertical-gap">
                         <div class="col-md-6">
-                            Email:
 
                             <div class="nk-gap"></div>
-                            <input type="email" value="" name="email" class=" form-control" placeholder="Email">
+                            <input type="email" value="" name="email" id="email" class=" form-control" placeholder="Email">
 
                             <div class="nk-gap"></div>
-                            <input type="password" value="" name="password" class="required form-control" placeholder="Password">
+                            <input type="name" value="" name="name" id="name" class=" form-control" placeholder="Name">
 
                             <div class="nk-gap"></div>
-                            <input type="password" value="" name="password2" class="required form-control" placeholder="Confirm Password">
+                            <input type="password" value="" name="password" id="password" class="required form-control" placeholder="Password">
+
+                            <div class="nk-gap"></div>
+                            <input type="password" value="" name="password2" id="password2" class="required form-control" placeholder="Confirm Password">
                         </div>
                         <div class="col-md-6">
                             Or social account:
@@ -97,7 +102,7 @@
                     <div class="nk-gap-1"></div>
                     <div class="row vertical-gap">
                         <div class="col-md-6">
-                            <a href="#" class="nk-btn nk-btn-rounded nk-btn-color-white nk-btn-block">Sign Up</a>
+                            <a href="#" id="signup" class="nk-btn nk-btn-rounded nk-btn-color-white nk-btn-block">Sign Up</a>
                         </div>
                         <div class="col-md-6">
                             <div class="mnt-5">
@@ -116,3 +121,60 @@
 
 
 <!-- END: Register Modal -->
+<script type="text/javascript">
+    $("#signup").on('click',function(e){
+        e.preventDefault();
+
+        var email = $("#email").val();
+        var name = $("#name").val();
+        var password = $("#password").val();
+        var password2 = $("#password2").val();
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/user/signup',
+            data:{email:email,name:name,password:password},
+            success: function(res){
+                console.log(res);
+                if (res == 'success'){
+                    window.location = '/';
+                }else{
+                    toastr.error(res);
+                }
+            }
+        });
+    });
+
+    $("#signin").on('click',function(e){
+        e.preventDefault();
+
+        var email = $("#signin_email").val();
+        var password = $("#signin_password").val();
+        var remember = $("#remember").val();
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/user/signin',
+            data:{email:email,password:password,remember:remember},
+            success: function(res){
+                console.log(res);
+                if (res == 'success'){
+                    window.location = '/';
+                }else{
+                    toastr.error(res);
+                }
+            }
+        });
+    });
+</script>

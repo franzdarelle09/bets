@@ -91,7 +91,6 @@ Object.defineProperty(exports, "__esModule", {
 -------------------------------------------------------------------*/
 var options = {
     scrollToAnchorSpeed: 700,
-
     templates: {
         secondaryNavbarBackItem: 'Back',
 

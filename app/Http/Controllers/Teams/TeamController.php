@@ -45,7 +45,7 @@ class TeamController extends Controller
             $filaNameToStore = 'noimage.jpg';
         }
 
-        $team = $request->isMethod('put')  ? Team::findOrFail($request->product_id) : new Team;
+        $team = $request->isMethod('put')  ? Team::findOrFail($request->team_id) : new Team;
         $team->id = $request->input('team_id');
         $team->name = $request->input('name');
         $team->descriptive_name = $request->input('descriptive_name');

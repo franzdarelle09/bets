@@ -26,17 +26,28 @@
 							<label>Team B</label>
 							<v-select v-model='team_b' :options="teams" :reduce="descriptive_name => descriptive_name.id" label="descriptive_name"></v-select>
 						</div>
+						<div class="form-group">
+						<div class="row mx-0">
+							<div class="col-md-6 mx-0 px-0">
+								<input type="date" class="form-control" v-model="date">
+							</div>
+							<div class="col-md-6">
+								<input type="time" class="form-control" v-model="time">
+							</div>
+						</div>
+						</div>
 						<div class="form-group col-md-6 p-0 m-0">
 							<label>Number of Games</label>
 							<input type="number" class="form-control" @keyup="checkHandicapDependencies()" v-model="number_of_matches">
 						</div>
+
 						<div v-if="checkIfReady()">
 							<div class="form-group mt-2">
 								<label>Options</label>
 								<br>
 								<div style="display: inline-block">
 									<input type="checkbox" v-model="options.f10k">&nbsp; F10K
-									<input type="checkbox" v-model="options.game_winner" style="margin-left:20px;">&nbsp; Game Winner
+									<span v-if="number_of_matches > 1"><input type="checkbox"  v-model="options.game_winner" style="margin-left:20px;">&nbsp; Game Winner</span>
 									<span v-if="number_of_matches > 1"><input type="checkbox" @click="checkHandicap()" v-model="options.handicap" style="margin-left:20px;">&nbsp;Enable Handicap</span>
 									<span v-if="options.handicap">
 										<input type="checkbox" v-model="options.team_a_minus_one_point_five" style="margin-left:20px;">&nbsp;Game Handicap [{{team_a_name()}} -1.5]
@@ -48,7 +59,7 @@
 						</div>
 					</div>
 					<div class="card-footer">
-						<button class="btn btn-primary float-right">Save</button>
+						<button class="btn btn-primary float-right" @click="addMatch()">Save</button>
 					</div>
 				</div>
 			</div>
@@ -59,6 +70,7 @@
 	export default {
 		data(){
 			return{
+				names:['Match Winner','Game 1 Winner','Game 2 Winner','Game 3 Winner','Game 4 Winner','Game 5 Winner'],
 				categories:[],
 				teams:[],
 				events:[],
@@ -67,6 +79,8 @@
 				team_a:0,
 				team_b:0,
 				number_of_matches:1,
+				date:'',
+				time:'',
 				options: {
 					f10k: false,
 					game_winner: false,
@@ -82,10 +96,31 @@
 			this.loadEvents();
 		},
 		methods: {
+			addMatch(){
+				var formdata = new FormData();
+				formdata.append('category_id',this.category_id);
+				formdata.append('event_id',this.event_id);
+				formdata.append('team_a',this.team_a);
+				formdata.append('team_b',this.team_b);
+				formdata.append('number_of_matches',this.number_of_matches);
+				formdata.append('date',this.date);
+				formdata.append('time',this.time);
+				formdata.append('number_of_matches',this.number_of_matches);
+				formdata.append('options',JSON.stringify(this.options));
+				axios.post('/admin/matches/save',formdata)
+					 .then(res => {
+					 	console.log(res.data);
+					 	alert('success');
+					 	window.location='/admin/matches/create';
+					 })
+					 .catch(err => {
+					 	console.log(err);
+					 });
+			},
 			loadCategories(){
 				axios.get('/api/categories')
 					 .then(res => {
-					 	console.log(res.data);
+					 
 					 	this.categories = res.data.data;
 					 })
 					 .catch(err => {
