@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Matches;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
 use App\Http\Resources\MatchResource;
+use App\Models\Bet;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Match;
 use App\Models\Team;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,10 +18,8 @@ class MatchController extends Controller
 {
     public function test()
     {
-      $odds_a = 1.2389403;
-      // $odds_a = $odds_a * 100;
-      $odds_a = ((floor($odds_a * 100)) / 100);
-       return $odds_a;
+      $today = Carbon::today();
+      dd($today);
     }
 
     public function index()
@@ -97,5 +97,23 @@ class MatchController extends Controller
     	return MatchResource::collection(
     		Match::with('children')->parents()->get()
     	);
+    }
+
+    public function matchDetails($slug)
+    {
+        $match = Match::whereSlug($slug)->first();
+        return view('admin.match',compact('match'));
+    }
+
+    public function delete()
+    {
+        Match::truncate();
+        Bet::truncate();
+    }
+
+    public function addTime(Request $request)
+    {
+        $data = $request->all();
+        print_r($data);
     }
 }

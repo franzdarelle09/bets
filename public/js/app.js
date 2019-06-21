@@ -56001,7 +56001,17 @@ var render = function() {
                     _vm._v(_vm._s(_vm.getTimeNow(match.scheduled_date)))
                   ]),
                   _vm._v(" "),
-                  _vm._m(2, true),
+                  _c("td", { staticClass: "text-center align-middle" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-success m-1",
+                        staticStyle: { width: "135px" },
+                        attrs: { href: "/admin/match/" + match.slug }
+                      },
+                      [_vm._v("Match Details")]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "text-center align-middle" }, [
                     _c(
@@ -56086,24 +56096,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Winner")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-center align-middle" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-success m-1", staticStyle: { width: "135px" } },
-        [_vm._v("Change Status")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-danger m-1", staticStyle: { width: "135px" } },
-        [_vm._v("Delete Match")]
-      )
     ])
   }
 ]

@@ -34,8 +34,8 @@
 						<td class="align-middle">{{getTimeNow(match.scheduled_date)}}</td>
 						<td class="text-center align-middle">
 							
-							<button class="btn btn-success m-1" style="width: 135px;">Change Status</button>
-							<button class="btn btn-danger m-1" style="width: 135px;">Delete Match</button>
+							<a :href="'/admin/match/'+match.slug" class="btn btn-success m-1" style="width: 135px;">Match Details</a>
+
 						</td>
 						<td class="text-center align-middle">
 							<button class="btn btn-primary m-1 declare-winner" :match-id="match.id" @click="declareWinner(match.team_a.id,match.id)" style="width: 135px;">{{match.team_a.name}}</button>
