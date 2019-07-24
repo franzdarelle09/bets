@@ -1,9 +1,7 @@
 <?php
 
 
-Route::get('/', function () {
-    return view('front.home');
-});
+Route::get('/', 'Matches\MatchController@home');
 Route::get('/match/{slug}','Matches\MatchfrontController@match');
 Route::middleware(['auth'])->group(function(){
 	Route::resource('events','Events\EventController');
@@ -21,8 +19,10 @@ Route::get('/admin/home', 'HomeController@index')->name('home');
 Route::post('/user/signup','Users\UserController@save');
 Route::post('/user/signin','Users\UserController@signin');
 Route::get('/user/signout','Users\UserController@signout');
-Route::post('/predict','Matches\MatchfrontController@predict');
+Route::post('/predict','Matches\MatchfrontController@predict');\
+
 Route::post('/add-time','Matches\MatchController@addTime');
+Route::post('/manual-time','Matches\MatchController@manualTime');
 
 Route::get('/populate-category','Categories\CategoryController@populateCategory');
 

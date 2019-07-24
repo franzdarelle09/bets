@@ -31,7 +31,7 @@
 
         
 <div class="container">
-<div id="app">
+<div id="">
     @include('front.partials.slider')
 
     <!-- START: Categories -->
@@ -80,7 +80,7 @@
     <div class="row vertical-gap">
         <div class="col-lg-8">
 
-            <match-list></match-list>
+            @include('front.partials.match-list')
         </div>
         <div class="col-lg-4">
             
